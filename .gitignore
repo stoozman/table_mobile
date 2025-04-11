@@ -43,3 +43,8 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Исключаем файлы с ключами и паролями
+android/key.properties
+android/app/release-key.keystore
+android/app/temp-release-key.keystore
