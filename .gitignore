@@ -48,3 +48,6 @@ app.*.map.json
 android/key.properties
 android/app/release-key.keystore
 android/app/temp-release-key.keystore
+
+# Исключаем файл .env
+.env
