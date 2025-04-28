@@ -2,6 +2,7 @@ class Task {
   final int id;
   final String productName;
   final String? comment;
+  final String? commentColor;
   bool completed;
   final DateTime date;
   final bool isImportant;
@@ -13,6 +14,7 @@ class Task {
     required this.id,
     required this.productName,
     this.comment,
+    this.commentColor,
     this.completed = false,
     required this.date,
     this.isImportant = false,
@@ -25,6 +27,7 @@ class Task {
     int? id,
     String? productName,
     String? comment,
+    String? commentColor,
     bool? completed,
     DateTime? date,
     bool? isImportant,
@@ -36,6 +39,7 @@ class Task {
       id: id ?? this.id,
       productName: productName ?? this.productName,
       comment: comment ?? this.comment,
+      commentColor: commentColor ?? this.commentColor,
       completed: completed ?? this.completed,
       date: date ?? this.date,
       isImportant: isImportant ?? this.isImportant,
@@ -50,6 +54,7 @@ class Task {
       id: json['id'],
       productName: json['product_name'],
       comment: json['comment'],
+      commentColor: json['comment_color'],
       completed: json['completed'] ?? false,
       date: DateTime.parse(json['date']),
       isImportant: json['is_important'] ?? false,

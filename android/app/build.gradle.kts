@@ -8,7 +8,8 @@ plugins {
 android {
     namespace = "com.example.table_android"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    // Указываем версию NDK, совместимую с плагинами
+    ndkVersion = "27.0.12077973"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11

@@ -314,7 +314,14 @@ class _RawMaterialsScreenState extends State<RawMaterialsScreen> {
                           if (task.comment != null && task.comment!.isNotEmpty)
                             Padding(
                               padding: const EdgeInsets.only(top: 4),
-                              child: Text(task.comment!),
+                              child: Text(
+                                task.comment!,
+                                style: TextStyle(
+                                  color: task.commentColor != null && task.commentColor!.isNotEmpty
+                                      ? Color(int.parse(task.commentColor!.replaceFirst('#', '0xff')))
+                                      : Colors.black,
+                                ),
+                              ),
                             ),
                           if (task.repeatType != 'none')
                             Padding(

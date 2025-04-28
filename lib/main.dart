@@ -5,6 +5,9 @@ import 'models/task.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'screens/raw_materials_screen.dart';
+import 'screens/qr_scan_screen.dart';
+import 'screens/raw_material_details_screen.dart';
+import 'dart:convert';
 
 void main() async {
   try {
@@ -33,55 +36,84 @@ class StartScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              'Выберите раздел',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 40),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const TasksScreen()),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                'Выберите раздел',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-              child: const Text(
-                'Продукты',
-                style: TextStyle(fontSize: 18),
-              ),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const RawMaterialsScreen()),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
+              const SizedBox(height: 40),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const TasksScreen()),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                child: const Text(
+                  'Продукты',
+                  style: TextStyle(fontSize: 18),
                 ),
               ),
-              child: const Text(
-                'Сырьё',
-                style: TextStyle(fontSize: 18),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const RawMaterialsScreen()),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                child: const Text(
+                  'Сырьё',
+                  style: TextStyle(fontSize: 18),
+                ),
               ),
-            ),
-          ],
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () async {
+                  final result = await Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const QRScanScreen()),
+                  );
+                  if (result != null && context.mounted) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => RawMaterialDetailsScreen(id: result as String),
+                      ),
+                    );
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                child: const Text(
+                  'Сканировать QR-код',
+                  style: TextStyle(fontSize: 18),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -399,7 +431,14 @@ class _RawMaterialsScreenState extends State<RawMaterialsScreen> {
                           if (task.comment != null && task.comment!.isNotEmpty)
                             Padding(
                               padding: const EdgeInsets.only(top: 4),
-                              child: Text(task.comment!),
+                              child: Text(
+                                task.comment!,
+                                style: TextStyle(
+                                  color: task.commentColor != null && task.commentColor!.isNotEmpty
+                                      ? Color(int.parse(task.commentColor!.replaceFirst('#', '0xff')))
+                                      : Colors.black,
+                                ),
+                              ),
                             ),
                           if (task.repeatType != 'none')
                             Padding(
@@ -877,7 +916,14 @@ class _TasksScreenState extends State<TasksScreen> {
                                         if (task.comment != null && task.comment!.isNotEmpty)
                                           Padding(
                                             padding: const EdgeInsets.only(top: 4),
-                                            child: Text(task.comment!),
+                                            child: Text(
+                                              task.comment!,
+                                              style: TextStyle(
+                                                color: task.commentColor != null && task.commentColor!.isNotEmpty
+                                                    ? Color(int.parse(task.commentColor!.replaceFirst('#', '0xff')))
+                                                    : Colors.black,
+                                              ),
+                                            ),
                                           ),
                                         if (task.repeatType != 'none')
                                           Padding(
